@@ -40,7 +40,7 @@ public class Account {
     public  void reg_account(long id_pass) {
         File_tools file_tools = new File_tools();
         try {
-            FileWriter file = new FileWriter("C:\\Users\\dante\\Downloads\\contas.txt", true);
+            FileWriter file = new FileWriter(File_tools.accounts_file(), true);
             BufferedWriter write = new BufferedWriter(file);
             write.write(String.valueOf(file_tools.file_size() + 1)+";");
             write.write(String.valueOf(id_pass)+ "#");
@@ -55,32 +55,31 @@ public class Account {
 
     }
 
+    //Consulta de contas e informações - Método para retornar todas as contas, senhas e saldos
     public void consul_all_accounts(){
         try {
-            File file = new File("C:\\Users\\dante\\Downloads\\contas.txt");
-            FileReader fileReader = new FileReader(file);
-            BufferedReader read = new BufferedReader(fileReader);
+            FileReader file_reader = new FileReader(File_tools.accounts_file());
+            BufferedReader read = new BufferedReader(file_reader);
             String line = read.readLine();
             while (line != null) {
                 System.out.println(line);
                 line = read.readLine();
             }
 
-            fileReader.close();
+            file_reader.close();
             read.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    //Método para retornar saldo da account bancária
+    //Consulta de saldo - Método para retornar saldo da account bancária
     public String consul_balance(Account account){
         String balance = "0";
         boolean validated = false;
         try {
-            File file = new File("C:\\Users\\dante\\Downloads\\contas.txt");
-            FileReader fileReader = new FileReader(file);
-            BufferedReader read = new BufferedReader(fileReader);
+            FileReader file_reader = new FileReader(File_tools.accounts_file());
+            BufferedReader read = new BufferedReader(file_reader);
             String line = " ";
             String aux;
 
@@ -95,7 +94,7 @@ public class Account {
                 }
 
             }
-            fileReader.close();
+            file_reader.close();
             read.close();
         } catch (Exception e) {
             e.printStackTrace();

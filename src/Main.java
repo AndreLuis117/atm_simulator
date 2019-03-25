@@ -1,25 +1,22 @@
 import core.Session;
 import entity.Account;
 import entity.Transactions;
+import tools.Printer;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
     public static  void  main(String[] args) throws IOException {
-        Boolean finish = false;
-        String input = "0";
-        String input2 = "0";
+        String input;
+        String input2;
         Account account = new Account();
         Transactions trans = new Transactions();
         Scanner read_in = new Scanner(System.in);
     while (true) {
-        System.out.println("Qual serviço você deseja usar?\n" +
-                "Digite '1' para abrir uma conta \n" +
-                "Digite '2' para fazer LOGIN");
+        Printer.initial_menu();
         input = read_in.next();
-
-
+        
         switch (input) {
             case "1":
                 System.out.println("Digite seu Id Pass");
@@ -35,12 +32,7 @@ public class Main {
                 account.setId_pass(input2);
                 if (Session.login(account) == true) {
                     while (true) {
-                        System.out.println("Qual serviço você deseja usar?\n" +
-                                "Digite 1 para consultar saldo\n" +
-                                "Digite 2 para depositar\n" +
-                                "Digite 3 para realizar um saque\n" +
-                                "Digite 4 para fazer transferência entre contas\n" +
-                                "Digite 5 para consultar um extrato");
+                        Printer.main_menu();
                         input = read_in.next();
                         switch (input) {
                             case "1":
@@ -71,10 +63,8 @@ public class Main {
                             case  "5":
                                 trans.statement(Session.get_session_user());
                         }
-                        System.out.println("\n------------------------------------------------------------------------------\n"+
-                                "Deseja fazer logoff?\n" +
-                                "Digite 1 para fazer logoff\n" +
-                                "Digite 2 para NÃO fazer logoff e retornar ao inicio do menu");
+
+                        Printer.final_menu();
                         input = read_in.next();
                         if (input.equals("1")) {
                             break;

@@ -1,6 +1,7 @@
 package core;
 
 import entity.Account;
+import tools.File_tools;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,8 +33,8 @@ public class Session {
             }
 
         }
-        catch (Exception e){
-            e.printStackTrace();
+        catch (NullPointerException e){
+            System.out.println("FALHA NO LOGIN! REVISE AS CREDENCIAIS E TENTE NOVAMENTE.");
         }
 
 
@@ -46,13 +47,12 @@ public class Session {
     public static boolean validate_login(Account account){
         boolean validated = false;
         try {
-            File arq = new File("C:\\Users\\dante\\Downloads\\contas.txt");
-            FileReader fileReader = new FileReader(arq);
-            BufferedReader ler = new BufferedReader(fileReader);
+            FileReader fileReader = new FileReader(File_tools.accounts_file());
+            BufferedReader read = new BufferedReader(fileReader);
             String line = " ";
             while (line != null & validated == false) {
 
-                line = ler.readLine();
+                line = read.readLine();
                 line = line.substring(0,line.indexOf(";")) + line.substring(line.indexOf(";") + 1, line.indexOf("#"));
 
                 if (line.equals(account.getNum_account() + account.getId_pass())){
@@ -61,7 +61,7 @@ public class Session {
 
             }
             fileReader.close();
-            ler.close();
+            read.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

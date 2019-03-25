@@ -2,6 +2,7 @@ package entity;
 
 
 import core.Session;
+import tools.File_tools;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,9 +16,8 @@ public class Transactions {
     public void deposit(Account account, double valor){
         String saldo = "0";
         try {
-            File file = new File("C:\\Users\\dante\\Downloads\\contas.txt");
             Path path = Paths.get("C:\\Users\\dante\\Downloads\\contas.txt");
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader(File_tools.accounts_file());
             BufferedReader reader = new BufferedReader(fileReader);
             String aux = " ";
             List<String> linhas = Files.readAllLines(path);
@@ -37,7 +37,7 @@ public class Transactions {
             fileReader.close();
             reader.close();
 
-            FileWriter file_w = new FileWriter(file, false);
+            FileWriter file_w = new FileWriter(File_tools.accounts_file(), false);
             BufferedWriter writer = new BufferedWriter(file_w);
             for (int i = 0; i < linhas.size(); i ++){
                 writer.write(linhas.get(i));
@@ -66,16 +66,12 @@ public class Transactions {
     }
 
     public void withdraw(Account account, double value){
-        String balance = "0";
+        String balance;
         try {
-            File file = new File("C:\\Users\\dante\\Downloads\\contas.txt");
-            Path path = Paths.get("C:\\Users\\dante\\Downloads\\contas.txt");
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader(File_tools.accounts_file());
             BufferedReader read = new BufferedReader(fileReader);
-            String line = " ";
             String aux = " ";
-            long aux2 = 0;
-            List<String> lines = Files.readAllLines(path);
+            List<String> lines = Files.readAllLines(File_tools.accounts_path());
             for (int i = 0; i < lines.size(); i ++) {
                 if (lines.get(i).substring(0, lines.get(i).indexOf(";")).equals(Session.get_session_user().getNum_account())){
                     balance = lines.get(i).substring(lines.get(i).indexOf("#") + 1,lines.get(i).length());
@@ -92,7 +88,7 @@ public class Transactions {
             fileReader.close();
             read.close();
 
-            FileWriter writer = new FileWriter(file, false);
+            FileWriter writer = new FileWriter(File_tools.accounts_file(), false);
             BufferedWriter write = new BufferedWriter(writer);
             for (int i = 0; i < lines.size(); i ++){
                 write.write(lines.get(i));
@@ -112,13 +108,11 @@ public class Transactions {
 
     public void log_transaction(Account account,Double current_balance, Double mov){
         try {
-            File file = new File("C:\\Users\\dante\\Downloads\\extratos.txt");
-            Path path = Paths.get("C:\\Users\\dante\\Downloads\\extratos.txt");
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader(File_tools.statement_file());
             BufferedReader reader = new BufferedReader(fileReader);
             String[] aux;
             String aux2;
-            List<String> linhas = Files.readAllLines(path);
+            List<String> linhas = Files.readAllLines(File_tools.statement_path());
             for (int i = 0; i < linhas.size(); i ++) {
                 aux = linhas.get(i).split(";");
 
@@ -134,7 +128,7 @@ public class Transactions {
             fileReader.close();
             reader.close();
 
-            FileWriter file_w = new FileWriter(file, false);
+            FileWriter file_w = new FileWriter(File_tools.statement_file(), false);
             BufferedWriter writer = new BufferedWriter(file_w);
             for (int i = 0; i < linhas.size(); i ++){
                 writer.write(linhas.get(i));
@@ -154,8 +148,7 @@ public class Transactions {
     }
     public  void statement (Account account){
         try {
-            File file = new File("C:\\Users\\dante\\Downloads\\extratos.txt");
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader(File_tools.statement_file());
             BufferedReader reader = new BufferedReader(fileReader);
             String line = " ";
             String[] aux;
