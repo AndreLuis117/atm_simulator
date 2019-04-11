@@ -20,26 +20,21 @@ public class Session {
     public static boolean login(Account account) {
         boolean validated = false;
 
-        try {
-            if (validate_login(account)== true) {
-                Session.session_user = account;
-                System.out.println("LOGIN EFETUADO COM SUCESSO!");
-                validated = true;
+            try {
 
+                if (validate_login(account) == true) {
+                    Session.session_user = account;
+                    System.out.println("LOGIN EFETUADO COM SUCESSO!");
+                    validated = true;
+
+                } else {
+                    throw new Exception("FALHA NO LOGIN! REVISE AS CREDENCIAIS E TENTE NOVAMENTE.");
+
+                }
             }
-            else {
-                System.out.println("FALHA NO LOGIN! REVISE AS CREDENCIAIS E TENTE NOVAMENTE.");
-
+            catch (Exception e){
+                e.printStackTrace();
             }
-
-        }
-        catch (NullPointerException e){
-            System.out.println("FALHA NO LOGIN! REVISE AS CREDENCIAIS E TENTE NOVAMENTE.");
-        }
-
-
-
-
 
         return validated;
     }
@@ -50,16 +45,18 @@ public class Session {
             FileReader fileReader = new FileReader(File_tools.accounts_file());
             BufferedReader read = new BufferedReader(fileReader);
             String line = " ";
-            while (line != null & validated == false) {
-
+            String[] aux;
+            while (line != null && validated == false) {
                 line = read.readLine();
-                line = line.substring(0,line.indexOf(";")) + line.substring(line.indexOf(";") + 1, line.indexOf("#"));
-
-                if (line.equals(account.getNum_account() + account.getId_pass())){
+                aux = line.split(";");
+                if (aux[0].equals(account.getNum_account()) & aux[1].equals(account.getId_pass())){
                     validated = true;
                 }
-
+                else {
+                    throw new Exception("Não foram encontrados registros correspondentes.");
+                }
             }
+
             fileReader.close();
             read.close();
         } catch (Exception e) {

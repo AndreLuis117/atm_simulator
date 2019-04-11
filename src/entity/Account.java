@@ -81,18 +81,18 @@ public class Account {
             FileReader file_reader = new FileReader(File_tools.accounts_file());
             BufferedReader read = new BufferedReader(file_reader);
             String line = " ";
-            String aux;
+            String[] aux;
 
-            while (line != null & validated == false) {
+            while (line != null && validated == false) {
                 line = read.readLine();
-                aux = line;
-                line = line.substring(0,line.indexOf(";")) + line.substring(line.indexOf(";") + 1, line.indexOf("#"));
-
-                if (line.equals(account.getNum_account() + account.getId_pass())){
-                    balance = aux.substring(aux.indexOf("#") +1, aux.length());
+                aux = line.split(";");
+                if (aux[0].equals(account.getNum_account()) & aux[1].equals(account.getId_pass())){
+                    balance = aux[2];
                     validated = true;
                 }
-
+                else {
+                    throw new Exception("Não foram encontrados registros correspondentes.");
+                }
             }
             file_reader.close();
             read.close();

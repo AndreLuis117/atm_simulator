@@ -30,6 +30,9 @@ public class Main {
                 System.out.println("Digite o seu Id Pass");
                 input2 = read_in.next();
                 account.setId_pass(input2);
+                try {
+
+
                 if (Session.login(account) == true) {
                     while (true) {
                         Printer.main_menu();
@@ -71,6 +74,10 @@ public class Main {
                         }
 
                     }
+                }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
                 }
 
 

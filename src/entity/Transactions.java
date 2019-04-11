@@ -19,28 +19,33 @@ public class Transactions {
             Path path = Paths.get("C:\\Users\\dante\\Downloads\\contas.txt");
             FileReader fileReader = new FileReader(File_tools.accounts_file());
             BufferedReader reader = new BufferedReader(fileReader);
-            String aux = " ";
-            List<String> linhas = Files.readAllLines(path);
-            for (int i = 0; i < linhas.size(); i ++) {
-                if (linhas.get(i).substring(0, linhas.get(i).indexOf(";")).equals(account.getNum_account())){
-                    saldo = linhas.get(i).substring(linhas.get(i).indexOf("#") + 1,linhas.get(i).length());
+            String[] aux;
+            String aux2;
+            List<String> line = Files.readAllLines(path);
+
+            for (int i = 0; i < line.size(); i ++) {
+                aux = line.get(i).split(";");
+
+                if (aux[0].equals(account.getNum_account())){
+                    saldo = aux[2];
                     log_transaction(account,Double.valueOf(saldo),valor);
                     valor = valor + Double.valueOf(saldo);
-                    aux = linhas.get(i).substring(0,linhas.get(i).indexOf("#") +1 ) + String.valueOf(valor);
-                    linhas.remove(i);
-                    linhas.add(i,aux);
+                    aux2 = aux[0] + ";" + aux[1] + ";" + valor;
+                    line.remove(i);
+                    line.add(i,aux2);
                     break;
 
                 }
 
             }
+
             fileReader.close();
             reader.close();
 
             FileWriter file_w = new FileWriter(File_tools.accounts_file(), false);
             BufferedWriter writer = new BufferedWriter(file_w);
-            for (int i = 0; i < linhas.size(); i ++){
-                writer.write(linhas.get(i));
+            for (int i = 0; i < line.size(); i ++){
+                writer.write(line.get(i));
                 writer.newLine();
 
             }
@@ -70,28 +75,34 @@ public class Transactions {
         try {
             FileReader fileReader = new FileReader(File_tools.accounts_file());
             BufferedReader read = new BufferedReader(fileReader);
-            String aux = " ";
-            List<String> lines = Files.readAllLines(File_tools.accounts_path());
-            for (int i = 0; i < lines.size(); i ++) {
-                if (lines.get(i).substring(0, lines.get(i).indexOf(";")).equals(Session.get_session_user().getNum_account())){
-                    balance = lines.get(i).substring(lines.get(i).indexOf("#") + 1,lines.get(i).length());
-                    log_transaction(Session.get_session_user(), Double.valueOf(balance), (-1*value));
+            String aux2 = " ";
+            String[] aux;
+            List<String> line = Files.readAllLines(File_tools.accounts_path());
+
+            for (int i = 0; i < line.size(); i ++) {
+                aux = line.get(i).split(";");
+
+                if (aux[0].equals(account.getNum_account())){
+                    balance = aux[2];
+                    log_transaction(account,Double.valueOf(balance),(-1*value));
                     value = Double.valueOf(balance) + (-1*value);
-                    aux = lines.get(i).substring(0,lines.get(i).indexOf("#") + 1 ) + String.valueOf(value);
-                    lines.remove(i);
-                    lines.add(i,aux);
+                    aux2 = aux[0] + ";" + aux[1] + ";" + value;
+                    line.remove(i);
+                    line.add(i,aux2);
                     break;
 
                 }
 
             }
+
+
             fileReader.close();
             read.close();
 
             FileWriter writer = new FileWriter(File_tools.accounts_file(), false);
             BufferedWriter write = new BufferedWriter(writer);
-            for (int i = 0; i < lines.size(); i ++){
-                write.write(lines.get(i));
+            for (int i = 0; i < line.size(); i ++){
+                write.write(line.get(i));
                 write.newLine();
 
             }
@@ -112,14 +123,14 @@ public class Transactions {
             BufferedReader reader = new BufferedReader(fileReader);
             String[] aux;
             String aux2;
-            List<String> linhas = Files.readAllLines(File_tools.statement_path());
-            for (int i = 0; i < linhas.size(); i ++) {
-                aux = linhas.get(i).split(";");
+            List<String> line = Files.readAllLines(File_tools.statement_path());
+            for (int i = 0; i < line.size(); i ++) {
+                aux = line.get(i).split(";");
 
                 if (aux[0].equals(account.getNum_account())){
-                    aux2 = linhas.get(i) + "Saldo: " + String.valueOf(current_balance) + ";" + String.valueOf(mov) + ";" + "Saldo: " +String.valueOf(current_balance + mov) + ";" ;
-                    linhas.remove(i);
-                    linhas.add(i,aux2);
+                    aux2 = line.get(i) + "Saldo: " + String.valueOf(current_balance) + ";" + String.valueOf(mov) + ";" + "Saldo: " +String.valueOf(current_balance + mov) + ";" ;
+                    line.remove(i);
+                    line.add(i,aux2);
                     break;
 
                 }
@@ -130,8 +141,8 @@ public class Transactions {
 
             FileWriter file_w = new FileWriter(File_tools.statement_file(), false);
             BufferedWriter writer = new BufferedWriter(file_w);
-            for (int i = 0; i < linhas.size(); i ++){
-                writer.write(linhas.get(i));
+            for (int i = 0; i < line.size(); i ++){
+                writer.write(line.get(i));
                 writer.newLine();
 
             }
